@@ -5,6 +5,11 @@ const commandeSchema = new mongoose.Schema({
         default: Date.now,  // Default to current date and time
     },
     product: [{
+        productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Product",
+        required: true
+        },
         quantity: {
             type: Number,
             required: true,
@@ -20,6 +25,11 @@ const commandeSchema = new mongoose.Schema({
         type: Number,
         required: true,
         min: [0, 'Total price must be a positive number']
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     }
 }, 
 { timestamps: true });  // Automatically add createdAt and updatedAt fields

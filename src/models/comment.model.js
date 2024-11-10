@@ -10,6 +10,16 @@ const commentSchema = new mongoose.Schema({
         minlength: 1, 
         maxlength: 1000 
     },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
+    productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+        required: true
+    }
 });
 
 
