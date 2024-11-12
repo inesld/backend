@@ -4,7 +4,7 @@ const commandeSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,  // Default to current date and time
     },
-    product: [{
+    products: [{
         productId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Product",
@@ -12,8 +12,6 @@ const commandeSchema = new mongoose.Schema({
         },
         quantity: {
             type: Number,
-            required: true,
-            min: [1, 'Quantity must be at least 1']  
         }
     }],
     status: {

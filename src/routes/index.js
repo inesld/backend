@@ -6,8 +6,6 @@ import commentRoutes from './comment.route.js';
 import commandeRoutes from './commande.routr.js';
 import productRoutes from './product.route.js';
 
-
-
 const router = Router();
 
 // Define routes

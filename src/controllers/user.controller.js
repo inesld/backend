@@ -52,6 +52,10 @@ const getAllUser = async (req, res) => {
 // Update an user by ID
 const updateUser = async (req, res) => {
     try {
+        if (Object.keys(req.body).length === 0) {
+            return handleError(res, null, "You must update least one attribute", 400); // base request
+        }
+        
         const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
 
         if (!user) {
