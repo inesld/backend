@@ -5,6 +5,7 @@ import categoryRoutes from './category.route.js';
 import commentRoutes from './comment.route.js';
 import commandeRoutes from './commande.routr.js';
 import productRoutes from './product.route.js';
+import authRoute from './authentication.route.js';
 
 const router = Router();
 
@@ -15,4 +16,9 @@ router.use('/category', categoryRoutes);
 router.use('/comment', commentRoutes);
 router.use('/commande', commandeRoutes);
 router.use('/product', productRoutes);
+router.use('/auth', authRoute);
+
+
+
 export default router;
+
