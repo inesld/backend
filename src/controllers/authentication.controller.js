@@ -38,6 +38,14 @@ const signup = async (req, res) => {
             { expiresIn: '1h' }
         );
 
+                // Set the token in the cookies
+                res.cookie('token', token, {
+                    httpOnly: true,   // Token is not accessible via JavaScript
+                    secure: true,     // Token is sent only over HTTPS
+                    sameSite: 'Strict', // Helps prevent CSRF attacks
+                    expires: new Date(Date.now() + 3600000) // Token expires in 1 hour
+                });
+
         return res.status(201).json({ token, payload: newUser });
     } catch (error) {
         handleError(res, error, "Error in signup", 500);
@@ -66,7 +74,14 @@ const login = async (req, res) => {
             { id: user._id, email: user.email, isAdmin: user.isAdmin },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
-        );
+        );        // Set the token in the cookies
+
+        res.cookie('token', token, {
+            httpOnly: true,   // Token is not accessible via JavaScript
+            secure: true,     // Token is sent only over HTTPS
+            sameSite: 'Strict', // Helps prevent CSRF attacks
+            expires: new Date(Date.now() + 3600000) // Token expires in 1 hour
+        });
 
         return res.status(200).json({ token, payload: user });
     } catch (error) {

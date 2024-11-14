@@ -16,9 +16,9 @@ const PORT = process.env.PORT || 4000;
 const DB_URL = `${process.env.DB}`;
 
 // Middleware
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(cors());
-app.use(cookieParser());
 
 // Connect to MongoDB
 mongoose.connect(DB_URL)

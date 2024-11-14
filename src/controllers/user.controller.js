@@ -23,7 +23,6 @@ const createUser = async (req, res) => {
 const getOneUser = async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
-
         if (!user) {
             return handleError(res, null, "No user found", 404); // 404 Not Found
         }
