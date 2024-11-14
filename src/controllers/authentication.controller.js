@@ -38,7 +38,7 @@ const signup = async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        return res.status(201).json({ message: "User created successfully", token });
+        return res.status(201).json({ token, payload: newUser });
     } catch (error) {
         handleError(res, error, "Error in signup", 500);
     }
@@ -52,7 +52,7 @@ const login = async (req, res) => {
         // Check if an user with the same email already exists
         const user = await User.findOne({ email });
         if (!user) {
-            return handleError(res, null, "User not found", 404);
+            return handleError(res, null, "Password or email invalid", 401);
         }
 
         // Check if password is correct
@@ -68,7 +68,7 @@ const login = async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        return res.status(200).json({ message: "Login successful", token });
+        return res.status(200).json({ token, payload: user });
     } catch (error) {
         handleError(res, error, "Error in login", 500);
     }
