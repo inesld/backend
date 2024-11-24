@@ -7,10 +7,10 @@ import {updateExampleValidation, validate} from '../middlewares/validators/examp
 const router = express.Router();
 
 // Define route
-router.post('/',isAuth, exampleControllers.createExample);
-router.get('/', isAuth, exampleControllers.getAllExample);
-router.get('/:id',isAuth, exampleControllers.getOneExample);
-router.put('/:id',isAuth, exampleControllers.updateExample);
-router.delete('/:id',isAuth,  exampleControllers.deleteExample);
+router.post('/', exampleControllers.createExample);
+router.get('/' , exampleControllers.getAllExample);
+router.get('/:id', exampleControllers.getOneExample);
+router.put('/:id', exampleControllers.updateExample);
+router.delete('/:id',  exampleControllers.deleteExample);
 
 export default router;

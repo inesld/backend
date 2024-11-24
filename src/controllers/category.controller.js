@@ -49,7 +49,7 @@ const getAllCategory = async (req, res) => {
       return res.status(204).send(); // No content
     }
 
-    return res.status(200).json({ payload: categorys });
+    return res.status(200).json({ payload: categories });
   } catch (error) {
     handleError(res, error, "Error in getting all categorys", 500);
   }

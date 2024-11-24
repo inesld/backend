@@ -4,7 +4,7 @@ const exampleSchema = new mongoose.Schema({
         type: String,
         required: true, // Name is required
         trim: true, // Empty fields at the beginning of the string
-        unique: true,
+        unique: false,
         minlength: 1, // At least 1 character
         maxlength: 100 // Maximum length for name
     },

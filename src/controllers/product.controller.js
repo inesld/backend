@@ -8,7 +8,7 @@ const createProduct = async (req, res) => {
   try {
     // Check if a product with the same name already exists
     const existingProduct = await Product.findOne({ name: req.body.name });
-    const existingCategory = await Category.findById(req.body.categoryId);
+    const existingCategory = await Category.findById(req.body.category._id);
 
     if (!existingCategory) {
       return handleError(res, null, "Category is Not exist", 404);
@@ -34,11 +34,19 @@ const createProduct = async (req, res) => {
 // Get a single product by ID
 const getOneProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id); // Find product by ID from URL params
+    let product = await Product.findById(req.params.id) // Inclure seulement le champ 'name' de la catégorie
 
     if (!product) {
       return handleError(res, null, "No product found", 404); // 404 Not Found
     }
+
+    const category = await Category.findById(product.category.id)
+console.log("category",category);
+    if (!category) {
+      return handleError(res, null, "No product found with this category", 404); // 404 Not Found
+    }
+
+    product.category.name = category.name 
 
     return res.status(200).json({ payload: product });
   } catch (error) {
@@ -49,17 +57,31 @@ const getOneProduct = async (req, res) => {
 // Get all products
 const getAllProduct = async (req, res) => {
   try {
-    const products = await Product.find();
+    // Récupérer tous les produits
+    let products = await Product.find();
 
     if (products.length === 0) {
       return res.status(204).send(); // No content
     }
 
-    return res.status(200).json({ payload: products });
+    // Parcourir chaque produit pour ajouter le nom de la catégorie
+    const productsWithCategory = await Promise.all(
+      products.map(async (product) => {
+        const category = await Category.findById(product.category.id);
+        if (category) {
+          product = product.toObject(); // Convertir le document Mongoose en objet JavaScript
+          product.category = { id: category._id, name: category.name }; // Ajouter la catégorie
+        }
+        return product;
+      })
+    );
+
+    return res.status(200).json({ payload: productsWithCategory });
   } catch (error) {
     handleError(res, error, "Error in getting all products", 500); // 500 Server Error
   }
 };
+
 
 // Update a product by ID
 const updateProduct = async (req, res) => {
@@ -67,6 +89,13 @@ const updateProduct = async (req, res) => {
     if (Object.keys(req.body).length === 0) {
       return handleError(res, null, "You must update least one attribute", 400); // base request
     }
+
+    const existingCategory = await Category.findById(req.body.categoryId);
+
+    if (!existingCategory) {
+      return handleError(res, null, "Category is Not exist", 404);
+    }
+
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });

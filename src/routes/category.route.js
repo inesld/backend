@@ -8,11 +8,11 @@ import isAdmin from '../middlewares/permission/isAdmin.js';
 const router = express.Router();
 
 // Define routes
-router.post('/',isAuth, isAdmin, categoryControllers.createCategory);
-router.get('/:id',isAuth, categoryControllers.getOneCategory);// ctrolr espace
-router.get('/',isAuth, categoryControllers.getAllCategory);// ctrolr espace
-router.put('/:id',isAuth, isAdmin, categoryControllers.updateCategory);
-router.delete('/:id',isAuth, isAdmin, categoryControllers.deleteCategory);
+router.post('/', categoryControllers.createCategory);
+router.get('/:id', categoryControllers.getOneCategory);// ctrolr espace
+router.get('/', categoryControllers.getAllCategory);// ctrolr espace
+router.put('/:id', categoryControllers.updateCategory);
+router.delete('/:id', categoryControllers.deleteCategory);
 
 
 

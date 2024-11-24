@@ -10,7 +10,7 @@ const createExample = async (req, res) => {
 
         if (existingExample) {
             return handleError(res, null, "Example with this name already exists", 409); // 409 Conflict
-        }
+        }  
 
         const newExample = new Example(req.body);
         await newExample.save();

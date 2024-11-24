@@ -36,13 +36,16 @@ const productSchema = new mongoose.Schema(
         return this.store > 0;
       },
     },
-    categoryId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category", // Reference to the Category model
-      required: true, // Set to true if each product must have a category
-    },
-  },
-  { timestamps: true }
+    category: {
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category", // Reference to the Category model
+        required: true,
+      },
+      name: {
+        type: String,
+      },
+    }}
 ); // Automatically adds createdAt and updatedAt fields
 
 // Create and export the Product model

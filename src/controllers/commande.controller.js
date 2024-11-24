@@ -8,6 +8,12 @@ const createCommande = async (req, res) => {
     if (Object.keys(req.body).length === 0) {
       return handleError(res, null, "You must update least one attribute", 400); // base request
     }
+            // Check if an user
+            const existingUser = await User.findById(req.body.userId);
+
+            if (!existingUser) {
+                return handleError(res, null, "User is not exists", 409); // 409 Conflict
+            }
 
     let totalPrice = 0;
 
