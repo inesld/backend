@@ -1,5 +1,6 @@
 // Import model
 import Category from "../models/category.model.js";
+import Product from "../models/product.model.js";
 import handleError from "../middlewares/errors/handleError.js";
 
 //  create a new category
@@ -92,22 +93,24 @@ const deleteCategory = async (req, res) => {
   try {
     const category = await Category.findByIdAndDelete(req.params.id);
 
-    if (!category) {
-        return handleError(res, null, "No category found", 404);
-      }
+    if (!category) return handleError(res, null, "No category found", 404);
 
-    const relatedProduct = await Product.findOne({categoryId: category.id})
+    const relatedProduct = await Product.findOne({ categoryId: category.id });
 
     if (relatedProduct) {
-        return handleError(res, null, "Can not Deleted this category related to some product", 409);
-      }
+      return handleError(
+        res,
+        null,
+        "Can not Deleted this category related to some product",
+        409
+      );
+    }
 
     return res.status(200).json({ payload: "Category deleted" });
   } catch (error) {
     handleError(res, error, "Error in deleting category", 500);
   }
 };
-
 const categoryController = {
   createCategory,
   getOneCategory,
