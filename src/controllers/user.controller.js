@@ -4,18 +4,28 @@ import handleError from '../middlewares/errors/handleError.js'
 // create a new user
 const createUser = async (req, res) => {
     try {
-        // Check if an user with the same email already exists
-        const existingUser = await User.findOne({ email: req.body.email });
+        const { firstName, lastName, email, password, gender } = req.body;
 
-        if (existingUser) {
-            return handleError(res, null, "User with this email already exists", 409); // 409 Conflict
+      
+        if (!firstName || !lastName || !email || !password || !gender) {
+            return res.status(400).json({
+                message: "All fields (firstName, lastName, email, password, gender) are required.",
+            });
         }
 
-        const newUser = new User(req.body);
+        // check if an user with the same email already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(409).json({ message: "User with this email already exists." });
+        }
+
+        const newUser = new User({ firstName, lastName, email, password, gender });
         await newUser.save();
-        return res.status(201).json({ payload: newUser });
+
+        res.status(201).json({ payload: newUser });
     } catch (error) {
-        handleError(res, error, "Error in creating User", 500);
+        console.error("Error creating user:", error);
+        res.status(500).json({ message: "Error creating user.", error });
     }
 };
 
