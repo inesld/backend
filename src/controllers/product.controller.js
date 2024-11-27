@@ -8,7 +8,7 @@ const createProduct = async (req, res) => {
   try {
     // Check if a product with the same name already exists
     const existingProduct = await Product.findOne({ name: req.body.name });
-    const existingCategory = await Category.findById(req.body.category._id);
+    const existingCategory = await Category.findById(req.body.category.id);
 
     if (!existingCategory) {
       return handleError(res, null, "Category is Not exist", 404);
@@ -121,6 +121,7 @@ const deleteProduct = async (req, res) => {
 
     return res.status(200).json({ payload: "Product deleted" });
   } catch (error) {
+    console.log("rrrrrrrrrrrrrrrrrrrrrrrrr", error);
     handleError(res, error, "Error in deleting product", 500);
   }
 };

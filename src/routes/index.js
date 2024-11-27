@@ -15,7 +15,7 @@ router.use('/users', userRoutes);
 router.use('/category', categoryRoutes);
 router.use('/comment', commentRoutes);
 router.use('/commande', commandeRoutes);
-router.use('/product', productRoutes);
+router.use('/products', productRoutes);
 router.use('/auth', authRoute);
 
 

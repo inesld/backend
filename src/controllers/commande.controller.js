@@ -1,5 +1,6 @@
 import Commande from "../models/commande.model.js";
 import Product from "../models/product.model.js";
+import User from "../models/user.model.js";
 import handleError from "../middlewares/errors/handleError.js";
 
 // Create a new commande
@@ -10,7 +11,6 @@ const createCommande = async (req, res) => {
     }
             // Check if an user
             const existingUser = await User.findById(req.body.userId);
-
             if (!existingUser) {
                 return handleError(res, null, "User is not exists", 409); // 409 Conflict
             }
@@ -78,16 +78,41 @@ const getAllCommande = async (req, res) => {
   }
 };
 
-// Update a commande by ID
 const updateCommande = async (req, res) => {
   try {
+    // Ensure that at least one field is being updated
     if (Object.keys(req.body).length === 0) {
-        return handleError(res, null, "You must update least one attribute", 400); // base request
+      return handleError(res, null, "You must update at least one attribute", 400); 
+    }
+
+    // Optional: Add validation for specific fields in req.body
+    if (req.body.products) {
+      // Ensure that each product has a valid productId and quantity
+      for (const product of req.body.products) {
+        if (!product.productId || !product.quantity || product.quantity < 1) {
+          return handleError(res, null, "Each product must have a valid productId and quantity greater than 0", 400);
+        }
       }
+    }
+
+    // Calculate total price if not provided
+    if (req.body.products) {
+      let totalPrice = 0;
+      for (const product of req.body.products) {
+        const productData = await Product.findById(product.productId);
+        if (productData) {
+          totalPrice += productData.price * product.quantity;
+        }
+      }
+      req.body.totalPrice = totalPrice; // Set the total price in the request body
+    }
+
+    // Perform the update
     const commande = await Commande.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+      new: true, // Return the updated document
     });
 
+    // If no commande is found, return a 404 error
     if (!commande) {
       return handleError(res, null, "No commande found", 404);
     }
@@ -98,6 +123,7 @@ const updateCommande = async (req, res) => {
   }
 };
 
+
 // Delete a single commande by ID
 const deleteCommande = async (req, res) => {
   try {
@@ -105,11 +131,6 @@ const deleteCommande = async (req, res) => {
 
     if (!commande) {
       return handleError(res, null, "No commande found", 404);
-    }
-
-    if (commande.status !== "Cancelled") {
-        return handleError(res, null, "Can not deleted this order", 409);
-
     }
 
     return res.status(200).json({ payload: "Commande deleted" });
