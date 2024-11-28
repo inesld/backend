@@ -18,7 +18,7 @@ const productSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      default: "https://via.placeholder.com/150", // Default image URL
+      default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbdnFFmKNoG9BFo8XlFQouT2dveelgkNhu8Q&s", // Default image URL
     },
     price: {
       type: Number,

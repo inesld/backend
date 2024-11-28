@@ -7,9 +7,10 @@ import Category from "../models/category.model.js";
 const createProduct = async (req, res) => {
   try {
     // Check if a product with the same name already exists
+
     const existingProduct = await Product.findOne({ name: req.body.name });
     const existingCategory = await Category.findById(req.body.category.id);
-
+  
     if (!existingCategory) {
       return handleError(res, null, "Category is Not exist", 404);
     }
@@ -22,7 +23,7 @@ const createProduct = async (req, res) => {
         409
       ); // 409 Conflict
     }
-
+ req.body.image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbdnFFmKNoG9BFo8XlFQouT2dveelgkNhu8Q&s"
     const newProduct = new Product(req.body);
     await newProduct.save();
     return res.status(201).json({ payload: newProduct });
@@ -90,7 +91,7 @@ const updateProduct = async (req, res) => {
       return handleError(res, null, "You must update least one attribute", 400); // base request
     }
 
-    const existingCategory = await Category.findById(req.body.categoryId);
+    const existingCategory = await Category.findById(req.body.category.id);
 
     if (!existingCategory) {
       return handleError(res, null, "Category is Not exist", 404);
