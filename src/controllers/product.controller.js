@@ -42,7 +42,6 @@ const getOneProduct = async (req, res) => {
     }
 
     const category = await Category.findById(product.category.id)
-console.log("category",category);
     if (!category) {
       return handleError(res, null, "No product found with this category", 404); // 404 Not Found
     }
@@ -122,7 +121,6 @@ const deleteProduct = async (req, res) => {
 
     return res.status(200).json({ payload: "Product deleted" });
   } catch (error) {
-    console.log("rrrrrrrrrrrrrrrrrrrrrrrrr", error);
     handleError(res, error, "Error in deleting product", 500);
   }
 };

@@ -8,7 +8,7 @@ import handleError from '../middlewares/errors/handleError.js';
 //  signup
 const signup = async (req, res) => {
     try {
-        const { firstName, lasttName, email, password, gender, isAdmin } = req.body;
+        const { firstName, lastName, email, password, gender, isAdmin } = req.body;
 
         // Check if an user with the same email already exists
         const existingUser = await User.findOne({ email });
@@ -22,7 +22,7 @@ const signup = async (req, res) => {
         // create new user
         const newUser = new User({
             firstName,
-            lasttName,
+            lastName,
             email,
             password: hashedPassword,
             gender,
